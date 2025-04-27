@@ -80,12 +80,12 @@ def plot_curves(sizes, mean_scores, std_scores, label, axis):
 
 
 def plot_learning_curves(algo_name, algo, figsize=(12, 4)):
-    model = Pipeline(steps=[
+    mdl = Pipeline(steps=[
         ("preprocessor", preprocessors),
         ("algorithm", algo)
     ])
 
-    train_sizes, train_scores, test_scores = learning_curve(estimator=model, X=x_data, y=y_data, cv=3, scoring='r2',
+    train_sizes, train_scores, test_scores = learning_curve(estimator=mdl, X=x_data, y=y_data, cv=3, scoring='r2',
                                                             n_jobs=-1, random_state=42)
 
     mean_train_scores = np.mean(train_scores, axis=1)
@@ -107,7 +107,7 @@ def plot_learning_curves(algo_name, algo, figsize=(12, 4)):
     axis.set(xlabel="Training Set Sizes", ylabel="R-squared", title=algo_name)
     axis.legend(loc="lower right")
 
-    plt.show()
+    # plt.show()     # to see the graph just uncomment this!
 
 
 # Model Selection:
@@ -149,7 +149,7 @@ joblib.dump(saved_model, 'model.joblib')
 
 
 # Testing:
-testing_model = joblib.load(saved_model)
+testing_model = joblib.load('model.joblib')
 y_predict = saved_model.predict(x_test)
 score = r2_score(y_test, y_predict)
 print(score)
